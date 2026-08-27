@@ -63,7 +63,7 @@ struct DashboardView: View {
                     .refreshable { await viewModel.loadAll() }
                 }
             }
-            .navigationTitle("Hermes")
+            .navigationTitle("Widgita")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     if isEditing {

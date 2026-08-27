@@ -1,0 +1,64 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Upload a new build to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID", "76PCYAVZ3J"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID", "4904a776-6ccc-46ab-b1b5-17509f3631ae"),
+      key_filepath: ENV.fetch("ASC_API_KEY_PATH", File.expand_path("~/Downloads/AuthKey_76PCYAVZ3J.p8")),
+      duration: 1200,
+      in_house: false
+    )
+
+    build_number = latest_testflight_build_number(
+      api_key: api_key,
+      app_identifier: "com.pushkar.hermes-dashboard"
+    ) + 1
+
+    increment_build_number(
+      build_number: build_number,
+      xcodeproj: "HermesMobile.xcodeproj"
+    )
+
+    build_app(
+      project: "HermesMobile.xcodeproj",
+      scheme: "HermesMobile",
+      configuration: "Release",
+      export_method: "app-store",
+      export_options: {
+        testFlightInternalTestingOnly: true
+      },
+      clean: true,
+      output_directory: "build",
+      output_name: "Widgita.ipa"
+    )
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true,
+      app_identifier: "com.pushkar.hermes-dashboard"
+    )
+
+    UI.success("Widgita build #{build_number} uploaded to TestFlight!")
+  end
+
+  desc "Build and install on connected device"
+  lane :device do
+    build_app(
+      project: "HermesMobile.xcodeproj",
+      scheme: "HermesMobile",
+      configuration: "Debug",
+      export_method: "development",
+      clean: false,
+      output_directory: "build",
+      output_name: "Widgita-debug.ipa"
+    )
+
+    install_on_device(
+      ipa: "build/Widgita-debug.ipa"
+    )
+  end
+
+end
