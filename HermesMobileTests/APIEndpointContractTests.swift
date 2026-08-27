@@ -192,6 +192,7 @@ final class ContractReadinessTests: XCTestCase {
             .init(name: "models", method: "GET", endpoint: .models, path: "/api/models"),
             .init(name: "models live", method: "GET", endpoint: .modelsLive, path: "/api/models/live"),
             .init(name: "commands", method: "GET", endpoint: .commands, path: "/api/commands"),
+            .init(name: "command exec", method: "POST", endpoint: .commandExec, path: "/api/commands/exec"),
             .init(name: "default model", method: "POST", endpoint: .defaultModel, path: "/api/default-model"),
             .init(name: "reasoning read", method: "GET", endpoint: .reasoning(), path: "/api/reasoning"),
             .init(

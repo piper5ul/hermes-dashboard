@@ -74,6 +74,7 @@ enum Endpoint {
     case models
     case modelsLive
     case commands
+    case commandExec
     case defaultModel
     case reasoning(model: String? = nil, provider: String? = nil)
     case personalities
@@ -82,6 +83,7 @@ enum Endpoint {
     case switchProfile
     case createProfile
     case providers
+    case systemHealth
     case settings
     case updatesCheck
     case updatesApply
@@ -272,6 +274,8 @@ enum Endpoint {
             return "/api/models/live"
         case .commands:
             return "/api/commands"
+        case .commandExec:
+            return "/api/commands/exec"
         case .defaultModel:
             return "/api/default-model"
         case .reasoning:
@@ -288,6 +292,8 @@ enum Endpoint {
             return "/api/profile/create"
         case .providers:
             return "/api/providers"
+        case .systemHealth:
+            return "/api/system/health"
         case .settings:
             return "/api/settings"
         case .updatesCheck:

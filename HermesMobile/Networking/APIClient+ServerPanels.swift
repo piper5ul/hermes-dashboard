@@ -16,6 +16,17 @@ extension APIClient {
         try await send(endpoint: .commands, method: "GET")
     }
 
+    /// Executes a runbook/gateway command (`POST /api/commands/exec`). Upstream
+    /// answers `{"output": <str>}` on success and rejects unknown commands with
+    /// an HTTP error.
+    func execCommand(name: String) async throws -> CommandExecResponse {
+        try await send(
+            endpoint: .commandExec,
+            method: "POST",
+            body: CommandExecRequest(command: name)
+        )
+    }
+
     /// Saves the default model. Pass `provider` whenever the row names its
     /// provider (`provider_id` from the catalog group): Core persists
     /// `{model, provider}` atomically and resolves slash-qualified ids like
@@ -167,6 +178,10 @@ extension APIClient {
     func insights(days: Int) async throws -> InsightsResponse {
         try await send(endpoint: .insights(days: days), method: "GET")
     }
+}
+
+private struct CommandExecRequest: Encodable {
+    let command: String
 }
 
 private struct DefaultModelRequest: Encodable {

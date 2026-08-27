@@ -318,6 +318,47 @@
 		C5A0D8F5502048B6B9258B01 /* InsightsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A0D8F5502048B6B9258B00 /* InsightsViewModelTests.swift */; };
 		105050000000000000000001 /* ComposerModelPickerSectionExpansionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105050000000000000000002 /* ComposerModelPickerSectionExpansionState.swift */; };
 		105050000000000000000003 /* ComposerModelPickerSectionExpansionStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105050000000000000000004 /* ComposerModelPickerSectionExpansionStateTests.swift */; };
+		D1A5E0000000000000000012 /* HermesAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000011 /* HermesAction.swift */; };
+		D1A5E0000000000000000014 /* ServerCapabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000013 /* ServerCapabilities.swift */; };
+		D1A5E0000000000000000016 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000015 /* DashboardView.swift */; };
+		D1A5E0000000000000000018 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000017 /* DashboardViewModel.swift */; };
+		D1A5E000000000000000001A /* ActionRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000019 /* ActionRegistry.swift */; };
+		D1A5E000000000000000001C /* ActionExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000001B /* ActionExecutor.swift */; };
+		D1A5E000000000000000001E /* DashboardDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000001D /* DashboardDataProvider.swift */; };
+		D1A5E0000000000000000020 /* ServerCapabilityProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000001F /* ServerCapabilityProbe.swift */; };
+		D1A5E0000000000000000022 /* WidgetActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000021 /* WidgetActionBar.swift */; };
+		D1A5E0000000000000000024 /* WidgetModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000023 /* WidgetModels.swift */; };
+		D1A5E0000000000000000026 /* WidgetRenderers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000025 /* WidgetRenderers.swift */; };
+		D1A5E0000000000000000028 /* AddWidgetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000027 /* AddWidgetSheet.swift */; };
+		D1A5E000000000000000002A /* WidgetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000029 /* WidgetRenderer.swift */; };
+		D1A5E000000000000000002C /* WidgetRendererRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000002B /* WidgetRendererRegistration.swift */; };
+		D1A5E000000000000000002E /* DashboardCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000002D /* DashboardCards.swift */; };
+		D1A5E0000000000000000062 /* EditWidgetSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000061 /* EditWidgetSheet.swift */; };
+		D1A5E0000000000000000030 /* FormatUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000002F /* FormatUtils.swift */; };
+		D1A5E0000000000000000032 /* GaugeHealthRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000031 /* GaugeHealthRenderer.swift */; };
+		D1A5E0000000000000000034 /* SparklineInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000033 /* SparklineInsightsRenderer.swift */; };
+		D1A5E0000000000000000036 /* BarChartInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000035 /* BarChartInsightsRenderer.swift */; };
+		D1A5E0000000000000000038 /* StatCardInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000037 /* StatCardInsightsRenderer.swift */; };
+		D1A5E000000000000000003A /* StatCardHealthRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000039 /* StatCardHealthRenderer.swift */; };
+		D1A5E000000000000000003C /* MultiStatInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000003B /* MultiStatInsightsRenderer.swift */; };
+		D1A5E000000000000000003E /* HeatmapInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000003D /* HeatmapInsightsRenderer.swift */; };
+		D1A5E0000000000000000040 /* ListHealthRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000003F /* ListHealthRenderer.swift */; };
+		D1A5E0000000000000000042 /* ListAlertsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000041 /* ListAlertsRenderer.swift */; };
+		D1A5E0000000000000000044 /* ListCronsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000043 /* ListCronsRenderer.swift */; };
+		D1A5E0000000000000000046 /* ListInsightsRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000045 /* ListInsightsRenderer.swift */; };
+		D1A5E0000000000000000048 /* KanbanTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000047 /* KanbanTabView.swift */; };
+		D1A5E000000000000000004A /* SettingsTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000049 /* SettingsTabView.swift */; };
+		D1A5E000000000000000004C /* CronDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000004B /* CronDetailView.swift */; };
+		D1A5E000000000000000004E /* HealthDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000004D /* HealthDetailView.swift */; };
+		D1A5E0000000000000000050 /* SystemHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000004F /* SystemHealth.swift */; };
+		D1A5E0000000000000000052 /* ApprovalRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000051 /* ApprovalRequest.swift */; };
+		D1A5E0000000000000000054 /* TieredActionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000053 /* TieredActionModels.swift */; };
+		D1A5E0000000000000000056 /* RunbookActionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000055 /* RunbookActionCard.swift */; };
+		D1A5E0000000000000000058 /* ActionTierBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000057 /* ActionTierBadge.swift */; };
+		D1A5E000000000000000005A /* ManualActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E0000000000000000059 /* ManualActionRow.swift */; };
+		D1A5E000000000000000005C /* AIActionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000005B /* AIActionCard.swift */; };
+		D1A5E000000000000000005E /* APIClient+Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000005D /* APIClient+Health.swift */; };
+		D1A5E0000000000000000060 /* APIClient+Approval.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1A5E000000000000000005F /* APIClient+Approval.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -667,6 +708,47 @@
 		FC2A37872AC842629FBDDFA4 /* SlashCommandAutocompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlashCommandAutocompleteView.swift; sourceTree = "<group>"; };
 		105050000000000000000002 /* ComposerModelPickerSectionExpansionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModelPickerSectionExpansionState.swift; sourceTree = "<group>"; };
 		105050000000000000000004 /* ComposerModelPickerSectionExpansionStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerModelPickerSectionExpansionStateTests.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000011 /* HermesAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HermesAction.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000013 /* ServerCapabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCapabilities.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000015 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000017 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000019 /* ActionRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRegistry.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000001B /* ActionExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionExecutor.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000001D /* DashboardDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataProvider.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000001F /* ServerCapabilityProbe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCapabilityProbe.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000021 /* WidgetActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetActionBar.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000023 /* WidgetModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModels.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000025 /* WidgetRenderers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetRenderers.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000027 /* AddWidgetSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWidgetSheet.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000029 /* WidgetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetRenderer.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000002B /* WidgetRendererRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetRendererRegistration.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000002D /* DashboardCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardCards.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000061 /* EditWidgetSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWidgetSheet.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000002F /* FormatUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatUtils.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000031 /* GaugeHealthRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeHealthRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000033 /* SparklineInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparklineInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000035 /* BarChartInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000037 /* StatCardInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCardInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000039 /* StatCardHealthRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCardHealthRenderer.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000003B /* MultiStatInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStatInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000003D /* HeatmapInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeatmapInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000003F /* ListHealthRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListHealthRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000041 /* ListAlertsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAlertsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000043 /* ListCronsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCronsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000045 /* ListInsightsRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListInsightsRenderer.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000047 /* KanbanTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanbanTabView.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000049 /* SettingsTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTabView.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000004B /* CronDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CronDetailView.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000004D /* HealthDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDetailView.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000004F /* SystemHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemHealth.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000051 /* ApprovalRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApprovalRequest.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000053 /* TieredActionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TieredActionModels.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000055 /* RunbookActionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunbookActionCard.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000057 /* ActionTierBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionTierBadge.swift; sourceTree = "<group>"; };
+		D1A5E0000000000000000059 /* ManualActionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualActionRow.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000005B /* AIActionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIActionCard.swift; sourceTree = "<group>"; };
+		D1A5E000000000000000005D /* APIClient+Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Health.swift"; sourceTree = "<group>"; };
+		D1A5E000000000000000005F /* APIClient+Approval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIClient+Approval.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -899,6 +981,8 @@
 				C0FF000000000000000000A2 /* CustomHeader.swift */,
 				1A2B3C4D5E6F7000000000B3 /* APIError.swift */,
 				C04400000000000000000002 /* CacheFallbackPolicy.swift */,
+				D1A5E000000000000000005D /* APIClient+Health.swift */,
+				D1A5E000000000000000005F /* APIClient+Approval.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -929,6 +1013,10 @@
 				1A2B3C4D5E6F70000000201 /* Memory.swift */,
 				1A2B3C4D5E6F70000000211 /* Skills.swift */,
 				C14900000000000000000002 /* Kanban.swift */,
+				D1A5E000000000000000004F /* SystemHealth.swift */,
+				D1A5E0000000000000000051 /* ApprovalRequest.swift */,
+				D1A5E0000000000000000011 /* HermesAction.swift */,
+				D1A5E0000000000000000013 /* ServerCapabilities.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -948,6 +1036,7 @@
 				1A2B3C4D5E6F70000000206 /* Memory */,
 				B50E1CE3A8912B92B1924714 /* Insights */,
 				C1490000000000000000000D /* Kanban */,
+				D1A5E00000000000000001 /* Dashboard */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -988,6 +1077,7 @@
 				C09500000000000000000002 /* AdaptiveGlassModifier.swift */,
 				C09500000000000000000006 /* AdaptiveGlassDebugFixture.swift */,
 				C0FF000000000000000000B2 /* CustomHeadersEditor.swift */,
+				D1A5E00000000000000005 /* TieredAction */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1243,6 +1333,79 @@
 				931EC010A2D940B0E42287A4 /* InsightsViewModel.swift */,
 			);
 			path = Insights;
+			sourceTree = "<group>";
+		};
+		D1A5E00000000000000001 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				D1A5E0000000000000000015 /* DashboardView.swift */,
+				D1A5E0000000000000000017 /* DashboardViewModel.swift */,
+				D1A5E0000000000000000019 /* ActionRegistry.swift */,
+				D1A5E000000000000000001B /* ActionExecutor.swift */,
+				D1A5E000000000000000001D /* DashboardDataProvider.swift */,
+				D1A5E000000000000000001F /* ServerCapabilityProbe.swift */,
+				D1A5E0000000000000000021 /* WidgetActionBar.swift */,
+				D1A5E0000000000000000047 /* KanbanTabView.swift */,
+				D1A5E0000000000000000049 /* SettingsTabView.swift */,
+				D1A5E00000000000000004 /* Details */,
+				D1A5E00000000000000002 /* WidgetRegistry */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		D1A5E00000000000000002 /* WidgetRegistry */ = {
+			isa = PBXGroup;
+			children = (
+				D1A5E0000000000000000023 /* WidgetModels.swift */,
+				D1A5E0000000000000000025 /* WidgetRenderers.swift */,
+				D1A5E0000000000000000027 /* AddWidgetSheet.swift */,
+				D1A5E0000000000000000029 /* WidgetRenderer.swift */,
+				D1A5E000000000000000002B /* WidgetRendererRegistration.swift */,
+				D1A5E000000000000000002D /* DashboardCards.swift */,
+				D1A5E0000000000000000061 /* EditWidgetSheet.swift */,
+				D1A5E000000000000000002F /* FormatUtils.swift */,
+				D1A5E00000000000000003 /* Renderers */,
+			);
+			path = WidgetRegistry;
+			sourceTree = "<group>";
+		};
+		D1A5E00000000000000003 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				D1A5E0000000000000000031 /* GaugeHealthRenderer.swift */,
+				D1A5E0000000000000000033 /* SparklineInsightsRenderer.swift */,
+				D1A5E0000000000000000035 /* BarChartInsightsRenderer.swift */,
+				D1A5E0000000000000000037 /* StatCardInsightsRenderer.swift */,
+				D1A5E0000000000000000039 /* StatCardHealthRenderer.swift */,
+				D1A5E000000000000000003B /* MultiStatInsightsRenderer.swift */,
+				D1A5E000000000000000003D /* HeatmapInsightsRenderer.swift */,
+				D1A5E000000000000000003F /* ListHealthRenderer.swift */,
+				D1A5E0000000000000000041 /* ListAlertsRenderer.swift */,
+				D1A5E0000000000000000043 /* ListCronsRenderer.swift */,
+				D1A5E0000000000000000045 /* ListInsightsRenderer.swift */,
+			);
+			path = Renderers;
+			sourceTree = "<group>";
+		};
+		D1A5E00000000000000004 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				D1A5E000000000000000004B /* CronDetailView.swift */,
+				D1A5E000000000000000004D /* HealthDetailView.swift */,
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		D1A5E00000000000000005 /* TieredAction */ = {
+			isa = PBXGroup;
+			children = (
+				D1A5E0000000000000000053 /* TieredActionModels.swift */,
+				D1A5E0000000000000000055 /* RunbookActionCard.swift */,
+				D1A5E0000000000000000057 /* ActionTierBadge.swift */,
+				D1A5E0000000000000000059 /* ManualActionRow.swift */,
+				D1A5E000000000000000005B /* AIActionCard.swift */,
+			);
+			path = TieredAction;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1631,6 +1794,47 @@
 				26AB000000000000000000B2 /* ProvidersView.swift in Sources */,
 				B5A100000000000000000001 /* SharedDraftStore.swift in Sources */,
 				B5A100000000000000000008 /* ShareInputReader.swift in Sources */,
+				D1A5E000000000000000005E /* APIClient+Health.swift in Sources */,
+				D1A5E0000000000000000060 /* APIClient+Approval.swift in Sources */,
+				D1A5E0000000000000000054 /* TieredActionModels.swift in Sources */,
+				D1A5E0000000000000000056 /* RunbookActionCard.swift in Sources */,
+				D1A5E0000000000000000058 /* ActionTierBadge.swift in Sources */,
+				D1A5E000000000000000005A /* ManualActionRow.swift in Sources */,
+				D1A5E000000000000000005C /* AIActionCard.swift in Sources */,
+				D1A5E0000000000000000050 /* SystemHealth.swift in Sources */,
+				D1A5E0000000000000000052 /* ApprovalRequest.swift in Sources */,
+				D1A5E000000000000000004C /* CronDetailView.swift in Sources */,
+				D1A5E000000000000000004E /* HealthDetailView.swift in Sources */,
+				D1A5E0000000000000000048 /* KanbanTabView.swift in Sources */,
+				D1A5E000000000000000004A /* SettingsTabView.swift in Sources */,
+				D1A5E0000000000000000012 /* HermesAction.swift in Sources */,
+				D1A5E0000000000000000014 /* ServerCapabilities.swift in Sources */,
+				D1A5E0000000000000000016 /* DashboardView.swift in Sources */,
+				D1A5E0000000000000000018 /* DashboardViewModel.swift in Sources */,
+				D1A5E000000000000000001A /* ActionRegistry.swift in Sources */,
+				D1A5E000000000000000001C /* ActionExecutor.swift in Sources */,
+				D1A5E000000000000000001E /* DashboardDataProvider.swift in Sources */,
+				D1A5E0000000000000000020 /* ServerCapabilityProbe.swift in Sources */,
+				D1A5E0000000000000000022 /* WidgetActionBar.swift in Sources */,
+				D1A5E0000000000000000024 /* WidgetModels.swift in Sources */,
+				D1A5E0000000000000000026 /* WidgetRenderers.swift in Sources */,
+				D1A5E0000000000000000028 /* AddWidgetSheet.swift in Sources */,
+				D1A5E000000000000000002A /* WidgetRenderer.swift in Sources */,
+				D1A5E000000000000000002C /* WidgetRendererRegistration.swift in Sources */,
+				D1A5E000000000000000002E /* DashboardCards.swift in Sources */,
+				D1A5E0000000000000000062 /* EditWidgetSheet.swift in Sources */,
+				D1A5E0000000000000000030 /* FormatUtils.swift in Sources */,
+				D1A5E0000000000000000032 /* GaugeHealthRenderer.swift in Sources */,
+				D1A5E0000000000000000034 /* SparklineInsightsRenderer.swift in Sources */,
+				D1A5E0000000000000000036 /* BarChartInsightsRenderer.swift in Sources */,
+				D1A5E0000000000000000038 /* StatCardInsightsRenderer.swift in Sources */,
+				D1A5E000000000000000003A /* StatCardHealthRenderer.swift in Sources */,
+				D1A5E000000000000000003C /* MultiStatInsightsRenderer.swift in Sources */,
+				D1A5E000000000000000003E /* HeatmapInsightsRenderer.swift in Sources */,
+				D1A5E0000000000000000040 /* ListHealthRenderer.swift in Sources */,
+				D1A5E0000000000000000042 /* ListAlertsRenderer.swift in Sources */,
+				D1A5E0000000000000000044 /* ListCronsRenderer.swift in Sources */,
+				D1A5E0000000000000000046 /* ListInsightsRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

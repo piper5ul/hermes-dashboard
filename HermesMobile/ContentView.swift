@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    private enum Tab: String { case dashboard, sessions, board, settings }
+
     @Bindable var authManager: AuthManager
     @Environment(\.scenePhase) private var scenePhase
     @AppStorage(ResponseCompletionNotifications.isEnabledKey) private var isResponseCompletionNotificationsEnabled = false
@@ -11,6 +13,7 @@ struct ContentView: View {
     @State private var pendingNewChatRequest: NewChatRequest?
     @State private var didCheckInitialPendingShare = false
     @State private var intentRouter = AppIntentRouter.shared
+    @State private var selectedTab: Tab = .dashboard
 
     var body: some View {
         content
@@ -60,16 +63,29 @@ struct ContentView: View {
         case .loggedOut(let server):
             OnboardingView(authManager: authManager, savedServer: server)
         case .loggedIn(let server):
-            SessionListView(
-                authManager: authManager,
-                server: server,
-                pendingSharedImport: $pendingSharedImport,
-                didRoutePendingSharedImport: consumePendingSharedImport,
-                hasWaitingSharedImport: hasWaitingSharedImport,
-                openNextSharedImport: openNextSharedImport,
-                pendingDeepLinkedSessionID: $pendingDeepLinkedSessionID,
-                requestedNewChat: $pendingNewChatRequest
-            )
+            TabView(selection: $selectedTab) {
+                DashboardView(server: server, authManager: authManager)
+                    .tabItem { Label("Dashboard", systemImage: "square.grid.2x2") }
+                    .tag(Tab.dashboard)
+                SessionListView(
+                    authManager: authManager,
+                    server: server,
+                    pendingSharedImport: $pendingSharedImport,
+                    didRoutePendingSharedImport: consumePendingSharedImport,
+                    hasWaitingSharedImport: hasWaitingSharedImport,
+                    openNextSharedImport: openNextSharedImport,
+                    pendingDeepLinkedSessionID: $pendingDeepLinkedSessionID,
+                    requestedNewChat: $pendingNewChatRequest
+                )
+                .tabItem { Label("Sessions", systemImage: "bubble.left.and.bubble.right") }
+                .tag(Tab.sessions)
+                KanbanTabView(server: server, onAPIError: authManager.handleAPIError)
+                    .tabItem { Label("Board", systemImage: "rectangle.3.group") }
+                    .tag(Tab.board)
+                SettingsTabView(authManager: authManager, server: server)
+                    .tabItem { Label("Settings", systemImage: "gearshape") }
+                    .tag(Tab.settings)
+            }
             // Switching the active server keeps us in `.loggedIn`, so without a
             // per-server identity SwiftUI would reuse the same SessionListView (and
             // its server-bound view model), leaving stale sessions/chat on screen.

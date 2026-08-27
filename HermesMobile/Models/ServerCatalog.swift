@@ -80,6 +80,13 @@ struct CommandsResponse: Decodable, Equatable {
     let commands: [AgentCommand]?
 }
 
+/// `POST /api/commands/exec` result. Upstream answers `{"output": <str>}` on
+/// success and rejects unknown commands with an HTTP error; `output` is optional
+/// so a missing/renamed field never crashes the action flow.
+struct CommandExecResponse: Decodable, Equatable {
+    let output: String?
+}
+
 struct AgentCommand: Decodable, Equatable, Identifiable, Sendable {
     var id: String { name ?? UUID().uuidString }
 
