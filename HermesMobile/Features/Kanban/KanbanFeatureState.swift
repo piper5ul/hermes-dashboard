@@ -307,6 +307,7 @@ struct KanbanLiveUpdateTiming: Sendable {
 @Observable
 final class KanbanFeatureState {
     static let liveStatuses = ["triage", "todo", "ready", "running", "blocked", "done"]
+    private static let defaultStatus = "ready"
     private static let bulkReconciliationConcurrency = 4
 
     let server: URL
@@ -339,7 +340,7 @@ final class KanbanFeatureState {
     private(set) var dispatcherCapabilityIsIncompatible = false
 
     private(set) var selectedBoardSlug: String?
-    var selectedStatus = "triage"
+    var selectedStatus = "ready"
     var searchText = ""
     var selectedProfile: String?
     var selectedTenant: String?
@@ -553,10 +554,13 @@ final class KanbanFeatureState {
     }
 
     var availableStatuses: [String] {
-        var result = Self.liveStatuses
-        if includeArchived { result.append("archived") }
+        var result = configuration?.columns?.compactMap { Self.normalized($0) } ?? []
+        if result.isEmpty { result = Self.liveStatuses }
+        if includeArchived, !result.contains("archived") { result.append("archived") }
         for column in snapshot?.columns ?? [] {
-            guard let name = normalized(column.name), !result.contains(name) else { continue }
+            guard let name = normalized(column.name),
+                  (includeArchived || name != "archived"),
+                  !result.contains(name) else { continue }
             result.append(name)
         }
         return result
@@ -933,6 +937,7 @@ final class KanbanFeatureState {
             selectedBoardSlug = boardToLoad
             boardSelectionNotice = nil
             self.snapshot = snapshot
+            reconcileSelectedStatus()
             markBoardActivity()
             detailRefreshRevision &+= 1
             liveCursor = max(0, snapshot.latestEventID ?? 0)
@@ -1382,7 +1387,7 @@ final class KanbanFeatureState {
 
     func setIncludeArchived(_ included: Bool) async {
         includeArchived = included
-        if !included, selectedStatus == "archived" { selectedStatus = "triage" }
+        if !included, selectedStatus == "archived" { reconcileSelectedStatus() }
         await refreshBoard(usingCursor: false)
     }
 
@@ -1397,7 +1402,7 @@ final class KanbanFeatureState {
         selectedTenant = normalized(tenant)
         self.includeArchived = includeArchived
         self.onlyMine = onlyMine
-        if !includeArchived, selectedStatus == "archived" { selectedStatus = "triage" }
+        if !includeArchived, selectedStatus == "archived" { reconcileSelectedStatus() }
         await refreshBoard(usingCursor: false)
     }
 
@@ -1407,7 +1412,7 @@ final class KanbanFeatureState {
         selectedTenant = nil
         includeArchived = false
         onlyMine = false
-        if selectedStatus == "archived" { selectedStatus = "triage" }
+        if selectedStatus == "archived" { reconcileSelectedStatus() }
         await refreshBoard(usingCursor: false)
     }
 
@@ -2313,6 +2318,7 @@ final class KanbanFeatureState {
             } else {
                 let report = try validateBrowsingSnapshot(response, board: board)
                 snapshot = applyingPendingOptimism(to: response)
+                reconcileSelectedStatus()
                 markBoardActivity()
                 detailRefreshRevision &+= 1
                 self.report = report
@@ -2669,6 +2675,12 @@ final class KanbanFeatureState {
 
     private func normalized(_ value: String?) -> String? {
         Self.normalized(value)
+    }
+
+    private func reconcileSelectedStatus() {
+        let statuses = availableStatuses
+        guard !statuses.isEmpty, !statuses.contains(selectedStatus) else { return }
+        selectedStatus = statuses.contains(Self.defaultStatus) ? Self.defaultStatus : statuses[0]
     }
 
     private static func normalized(_ value: String?) -> String? {

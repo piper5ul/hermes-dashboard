@@ -143,6 +143,46 @@ final class KanbanFeatureStateTests: XCTestCase {
         XCTAssertEqual(state.selectedStatus, "ready")
     }
 
+    func testBoardDefaultsToReadyWithoutReorderingConfiguredStatuses() async {
+        let state = KanbanFeatureState(
+            server: URL(string: "https://example.test")!,
+            client: KanbanClientStub()
+        )
+
+        await state.load()
+
+        XCTAssertEqual(state.selectedStatus, "ready")
+        XCTAssertEqual(Array(state.availableStatuses.prefix(6)), KanbanFeatureState.liveStatuses)
+    }
+
+    func testBoardFallsBackToFirstConfiguredStatusWhenReadyIsUnavailable() async {
+        let client = KanbanClientStub(
+            configurationResult: .success(KanbanFixtures.configurationWithoutReady),
+            boardResult: .success(KanbanFixtures.snapshotWithArchived)
+        )
+        let state = KanbanFeatureState(
+            server: URL(string: "https://example.test")!,
+            client: client
+        )
+
+        await state.load()
+
+        XCTAssertEqual(state.availableStatuses, ["triage", "todo", "running", "blocked", "done"])
+        XCTAssertEqual(state.selectedStatus, "triage")
+
+        state.selectedStatus = "archived"
+        await state.setIncludeArchived(false)
+        XCTAssertEqual(state.selectedStatus, "triage")
+
+        state.selectedStatus = "archived"
+        await state.applyFilters(profile: nil, tenant: nil, includeArchived: false, onlyMine: false)
+        XCTAssertEqual(state.selectedStatus, "triage")
+
+        state.selectedStatus = "archived"
+        await state.clearFilters()
+        XCTAssertEqual(state.selectedStatus, "triage")
+    }
+
     func testFilterAndBoardTransitionsPreserveLocalPresentationState() async {
         let client = BrowsingClient()
         let state = KanbanFeatureState(server: URL(string: "https://example.test")!, client: client)
@@ -2600,6 +2640,8 @@ private actor MissingChangedRefreshClient: KanbanDataClient {
 
 private enum KanbanFixtures {
     static let configuration = decode(KanbanConfiguration.self, #"{"columns":["triage","todo","ready","running","blocked","done"],"read_only":false}"#)
+    static let configurationWithoutReady = decode(KanbanConfiguration.self, #"{"columns":["triage","todo","running","blocked","done"],"read_only":false}"#)
+    static let snapshotWithArchived = decode(KanbanBoardSnapshot.self, #"{"changed":true,"read_only":false,"columns":[{"name":"triage","tasks":[]},{"name":"archived","tasks":[]}] }"#)
     static let boards = decode(KanbanBoardsResponse.self, #"{"boards":[{"slug":"main","name":"Main"}],"current":"main","read_only":false}"#)
     static let readOnlyBoard = decode(KanbanBoardsResponse.self, #"{"boards":[{"slug":"main","name":"Main","read_only":true}],"current":"main","read_only":false}"#)
     static let multiBoards = decode(KanbanBoardsResponse.self, #"{"boards":[{"slug":"main","name":"Main"},{"slug":"release","name":"Release"}],"current":"main","read_only":false}"#)
