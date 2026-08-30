@@ -2,6 +2,7 @@ import AVFoundation
 import XCTest
 @testable import HermesMobile
 
+@MainActor
 final class ComposerVoiceNoteRecorderTests: XCTestCase {
     // MARK: - Filename
 

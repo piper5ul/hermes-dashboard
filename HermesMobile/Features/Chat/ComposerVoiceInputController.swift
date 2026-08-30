@@ -805,7 +805,11 @@ enum ComposerVoiceMicrophonePermissionRequester {
 enum ComposerVoiceAudioSessionConfiguration {
     static let category = AVAudioSession.Category.playAndRecord
     static let mode = AVAudioSession.Mode.measurement
-    static let options: AVAudioSession.CategoryOptions = [.mixWithOthers, .allowBluetooth]
+    // HFP uses the same 0x4 bit as the deprecated allowBluetooth option. Using
+    // the raw value keeps this compatible with older Xcode SDK overlays while
+    // avoiding the deprecation warning on newer SDKs.
+    static let bluetoothHFP = AVAudioSession.CategoryOptions(rawValue: 0x4)
+    static let options: AVAudioSession.CategoryOptions = [.mixWithOthers, bluetoothHFP]
 }
 
 enum ComposerVoiceInputError: LocalizedError {

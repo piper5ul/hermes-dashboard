@@ -46,10 +46,12 @@ final class ComposerVoiceNoteRecorder {
     )
 
     init(
-        recorderFactory: @escaping (URL) throws -> AVAudioRecorder = { try AVAudioRecorder(url: $0, settings: ComposerVoiceNoteRecorder.recordingSettings) },
+        recorderFactory: ((URL) throws -> AVAudioRecorder)? = nil,
         permissionRequester: @escaping () async -> Bool = { await ComposerVoiceMicrophonePermissionRequester.request() }
     ) {
-        self.recorderFactory = recorderFactory
+        self.recorderFactory = recorderFactory ?? { [settings = Self.recordingSettings] url in
+            try AVAudioRecorder(url: url, settings: settings)
+        }
         self.permissionRequester = permissionRequester
     }
 
@@ -136,7 +138,7 @@ final class ComposerVoiceNoteRecorder {
 
     private func startRecording() throws {
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth])
+        try session.setCategory(.playAndRecord, mode: .default, options: [ComposerVoiceAudioSessionConfiguration.bluetoothHFP])
         try session.setActive(true, options: .notifyOthersOnDeactivation)
         didActivateSession = true
 

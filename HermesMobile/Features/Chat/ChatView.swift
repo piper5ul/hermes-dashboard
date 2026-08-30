@@ -1990,7 +1990,7 @@ struct ChatView: View {
 
         for url in fileURLs {
             do {
-                let file = try loadPastedFile(from: url, suggestedName: nil)
+                let file = try Self.loadPastedFile(from: url, suggestedName: nil)
                 await viewModel.uploadAttachment(data: file.data, filename: file.filename)
             } catch {
                 viewModel.setUploadAttachmentError(error.localizedDescription)
@@ -2050,7 +2050,7 @@ struct ChatView: View {
                 continue
             }
 
-            await viewModel.uploadAttachment(data: data, filename: pastedImageFilename(), previewData: data)
+            await viewModel.uploadAttachment(data: data, filename: Self.pastedImageFilename(), previewData: data)
         }
     }
 
@@ -2064,13 +2064,13 @@ struct ChatView: View {
                     return
                 }
 
-                guard let url = pastedFileURL(from: item) else {
+                guard let url = Self.pastedFileURL(from: item) else {
                     continuation.resume(throwing: PastedFileError.unreadableURL)
                     return
                 }
 
                 do {
-                    let file = try loadPastedFile(from: url, suggestedName: suggestedName)
+                    let file = try Self.loadPastedFile(from: url, suggestedName: suggestedName)
                     continuation.resume(returning: file)
                 } catch {
                     continuation.resume(throwing: error)
@@ -2089,7 +2089,7 @@ struct ChatView: View {
 
         for url in fileURLs {
             do {
-                let file = try loadPastedFile(from: url, suggestedName: nil)
+                let file = try Self.loadPastedFile(from: url, suggestedName: nil)
                 await viewModel.uploadAttachment(data: file.data, filename: file.filename)
             } catch {
                 viewModel.setUploadAttachmentError(error.localizedDescription)
@@ -2097,7 +2097,7 @@ struct ChatView: View {
         }
     }
 
-    private func loadPastedFile(from url: URL, suggestedName: String?) throws -> PastedFile {
+    private nonisolated static func loadPastedFile(from url: URL, suggestedName: String?) throws -> PastedFile {
         let didStartAccessing = url.startAccessingSecurityScopedResource()
         defer {
             if didStartAccessing {
@@ -2113,7 +2113,7 @@ struct ChatView: View {
         return PastedFile(data: data, filename: filename)
     }
 
-    private func validateAttachmentSize(for url: URL) throws {
+    private nonisolated static func validateAttachmentSize(for url: URL) throws {
         let values = try url.resourceValues(forKeys: [.fileSizeKey])
         guard let size = values.fileSize,
               size > PendingAttachment.maximumUploadBytes
@@ -2147,14 +2147,14 @@ struct ChatView: View {
                 continuation.resume(
                     returning: PastedFile(
                         data: data,
-                        filename: pastedImageFilename(suggestedName: suggestedName)
+                        filename: Self.pastedImageFilename(suggestedName: suggestedName)
                     )
                 )
             }
         }
     }
 
-    private func pastedImageFilename(suggestedName: String? = nil) -> String {
+    private nonisolated static func pastedImageFilename(suggestedName: String? = nil) -> String {
         if let suggestedName,
            !suggestedName.isEmpty,
            !URL(fileURLWithPath: suggestedName).pathExtension.isEmpty {
@@ -2164,7 +2164,7 @@ struct ChatView: View {
         return "image_\(Int(Date().timeIntervalSince1970))_\(UUID().uuidString.prefix(4)).jpg"
     }
 
-    private func pastedFileURL(from item: NSSecureCoding?) -> URL? {
+    private nonisolated static func pastedFileURL(from item: NSSecureCoding?) -> URL? {
         if let url = item as? URL {
             return url
         }

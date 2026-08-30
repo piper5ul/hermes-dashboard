@@ -183,8 +183,7 @@ final class ServerRegistry: @unchecked Sendable {
         // existing @AppStorage-backed consumers follow the switch. We never mirror
         // on first insert: a new entry is *seeded from* those defaults, so writing
         // back would change first-run identity for single-server users.
-        var identityToMirror: ServerAccount?
-        let result: ServerAccount = storage.withLock { snapshot in
+        let outcome: (account: ServerAccount, identityToMirror: ServerAccount?) = storage.withLock { snapshot in
             if let existing = snapshot.servers.first(where: { $0.id == id }) {
                 // Already registered: only flip the active selection + write
                 // through when it actually changes, so the launch path
@@ -193,21 +192,21 @@ final class ServerRegistry: @unchecked Sendable {
                 if snapshot.activeServerID != id {
                     snapshot.activeServerID = id
                     persist(snapshot)
-                    identityToMirror = existing
+                    return (existing, existing)
                 }
-                return existing
+                return (existing, nil)
             }
 
             let account = makeSeededAccount(id: id, url: url)
             snapshot.servers.append(account)
             snapshot.activeServerID = id
             persist(snapshot)
-            return account
+            return (account, nil)
         }
-        if let identityToMirror {
+        if let identityToMirror = outcome.identityToMirror {
             mirrorIdentityToDefaults(identityToMirror)
         }
-        return result
+        return outcome.account
     }
 
     /// Marks an already-registered server active (the Settings switcher, #17).
@@ -216,15 +215,14 @@ final class ServerRegistry: @unchecked Sendable {
     /// defaults so the avatar / header tint follow the switch.
     @discardableResult
     func setActive(id: String) -> ServerAccount? {
-        var newActive: ServerAccount?
-        storage.withLock { snapshot in
+        let newActive: ServerAccount? = storage.withLock { snapshot in
             guard snapshot.activeServerID != id,
                   let account = snapshot.servers.first(where: { $0.id == id }) else {
-                return
+                return nil
             }
             snapshot.activeServerID = id
             persist(snapshot)
-            newActive = account
+            return account
         }
         if let newActive {
             mirrorIdentityToDefaults(newActive)
@@ -239,27 +237,29 @@ final class ServerRegistry: @unchecked Sendable {
     /// the active selection untouched. No-op for an unregistered id. (#17)
     @discardableResult
     func remove(id: String) -> ServerAccount? {
-        var activeChangedTo: ServerAccount?
-        var didChangeActive = false
-        let activeAfter: ServerAccount? = storage.withLock { snapshot in
+        let outcome: (
+            activeAfter: ServerAccount?,
+            didChangeActive: Bool,
+            activeChangedTo: ServerAccount?
+        ) = storage.withLock { snapshot in
             guard snapshot.servers.contains(where: { $0.id == id }) else {
-                return snapshot.activeServer
+                return (snapshot.activeServer, false, nil)
             }
             let wasActive = snapshot.activeServerID == id
             snapshot.servers.removeAll { $0.id == id }
+            var activeChangedTo: ServerAccount?
             if wasActive {
                 let next = snapshot.servers.first
                 snapshot.activeServerID = next?.id
-                didChangeActive = true
                 activeChangedTo = next
             }
             persist(snapshot)
-            return snapshot.activeServer
+            return (snapshot.activeServer, wasActive, activeChangedTo)
         }
-        if didChangeActive, let activeChangedTo {
+        if outcome.didChangeActive, let activeChangedTo = outcome.activeChangedTo {
             mirrorIdentityToDefaults(activeChangedTo)
         }
-        return activeAfter
+        return outcome.activeAfter
     }
 
     /// Replaces the stored entry for `account.id` (per-server identity edits,
@@ -268,18 +268,15 @@ final class ServerRegistry: @unchecked Sendable {
     /// active server's edits show up live without each consumer reading the
     /// registry directly.
     func update(_ account: ServerAccount) {
-        var activeUpdate: ServerAccount?
-        storage.withLock { snapshot in
+        let activeUpdate: ServerAccount? = storage.withLock { snapshot in
             guard let index = snapshot.servers.firstIndex(where: { $0.id == account.id }) else {
-                return
+                return nil
             }
             var updated = account
             updated.updatedAt = now()
             snapshot.servers[index] = updated
             persist(snapshot)
-            if snapshot.activeServerID == account.id {
-                activeUpdate = updated
-            }
+            return snapshot.activeServerID == account.id ? updated : nil
         }
         if let activeUpdate {
             mirrorIdentityToDefaults(activeUpdate)

@@ -154,7 +154,7 @@ final class ChatAttachmentCoordinatorTests: APIClientTestCase {
         let secondUpload = Task {
             await coordinator.uploadAttachment(data: Data("two".utf8), filename: "two.txt")
         }
-        await secondUpload.value
+        _ = await secondUpload.value
 
         XCTAssertTrue(coordinator.isUploadingAttachment)
         let finishFirst = try XCTUnwrap(
@@ -162,7 +162,7 @@ final class ChatAttachmentCoordinatorTests: APIClientTestCase {
             "Expected the first upload completion to be deferred."
         )
         finishFirst()
-        await firstUpload.value
+        _ = await firstUpload.value
 
         XCTAssertFalse(coordinator.isUploadingAttachment)
         XCTAssertEqual(coordinator.pendingAttachments.map(\.name).sorted(), ["one.txt", "two.txt"])
