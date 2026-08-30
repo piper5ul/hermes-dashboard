@@ -32,7 +32,8 @@ platform :ios do
       },
       clean: true,
       output_directory: "build",
-      output_name: "Widgita.ipa"
+      output_name: "Widgita.ipa",
+      xcodebuild_formatter: ""
     )
 
     upload_to_testflight(
@@ -53,7 +54,8 @@ platform :ios do
       export_method: "development",
       clean: false,
       output_directory: "build",
-      output_name: "Widgita-debug.ipa"
+      output_name: "Widgita-debug.ipa",
+      xcodebuild_formatter: ""
     )
 
     install_on_device(
