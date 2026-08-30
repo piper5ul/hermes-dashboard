@@ -16,6 +16,8 @@ final class TranscriptMediaPreviewViewModel {
     private(set) var previewData: Data?
     private(set) var audioData: Data?
     private(set) var videoFileURL: URL?
+    private(set) var documentFileURL: URL?
+    private(set) var textContent: String?
     private(set) var originalByteCount: Int?
     private(set) var isLoading = false
     private(set) var errorMessage: String?
@@ -56,14 +58,12 @@ final class TranscriptMediaPreviewViewModel {
         previewData = nil
         audioData = nil
         videoFileURL = nil
+        documentFileURL = nil
+        textContent = nil
         originalByteCount = nil
         originalData = nil
         removeTemporaryVideoFile()
-
-        guard reference.isRasterImageCandidate || reference.isVideoCandidate else {
-            errorMessage = String(localized: "Preview is not available for this media type.")
-            return
-        }
+        removeTemporaryDocumentFile()
 
         isLoading = true
         errorMessage = nil
@@ -88,7 +88,7 @@ final class TranscriptMediaPreviewViewModel {
                 }
                 temporaryVideoURL = fileURL
                 videoFileURL = fileURL
-            } else {
+            } else if reference.isRasterImageCandidate {
                 if let downsampled = await ImagePreviewDownsampler.previewDataAsync(
                     from: data,
                     maxPixelSize: ImagePreviewDownsampler.filePreviewMaxPixelSize
@@ -109,6 +109,20 @@ final class TranscriptMediaPreviewViewModel {
                         errorMessage = String(localized: "Could not decode this image.")
                     }
                 }
+            } else if reference.isQuickLookPreviewable {
+                let fileURL = try writeTemporaryDocumentFile(data)
+                guard !Task.isCancelled, loadGeneration == generation else {
+                    try? FileManager.default.removeItem(at: fileURL)
+                    return
+                }
+                temporaryDocumentURL = fileURL
+                documentFileURL = fileURL
+            } else if reference.isTextPreviewable {
+                guard !Task.isCancelled, loadGeneration == generation else { return }
+                textContent = String(data: data, encoding: .utf8)
+                    ?? String(localized: "Could not decode this file as text.")
+            } else {
+                errorMessage = String(localized: "Preview is not available for this media type.")
             }
         } catch {
             guard !Task.isCancelled, loadGeneration == generation else { return }
@@ -167,9 +181,14 @@ final class TranscriptMediaPreviewViewModel {
         loadGeneration += 1
         isLoading = false
         audioData = nil
+        textContent = nil
         removeTemporaryVideoFile()
+        removeTemporaryDocumentFile()
         videoFileURL = nil
+        documentFileURL = nil
     }
+
+    private var temporaryDocumentURL: URL?
 
     private func writeTemporaryVideoFile(_ data: Data) throws -> URL {
         let ext = reference.videoFileExtension
@@ -179,11 +198,26 @@ final class TranscriptMediaPreviewViewModel {
         return url
     }
 
+    private func writeTemporaryDocumentFile(_ data: Data) throws -> URL {
+        let filename = reference.displayName
+        guard let fileURL = QuickLookExtensions.temporaryFileURL(filename: filename, data: data) else {
+            throw TranscriptMediaDocumentError.writeFailed
+        }
+        return fileURL
+    }
+
     private func removeTemporaryVideoFile() {
         if let temporaryVideoURL {
             try? FileManager.default.removeItem(at: temporaryVideoURL)
         }
         temporaryVideoURL = nil
+    }
+
+    private func removeTemporaryDocumentFile() {
+        if let temporaryDocumentURL {
+            try? FileManager.default.removeItem(at: temporaryDocumentURL)
+        }
+        temporaryDocumentURL = nil
     }
 
     private static func isAudioData(_ data: Data) -> Bool {
@@ -215,15 +249,48 @@ private enum TranscriptMediaPreviewError: LocalizedError {
     }
 }
 
-private extension TranscriptMediaReference {
-    var videoFileExtension: String {
+private enum TranscriptMediaDocumentError: LocalizedError {
+    case writeFailed
+
+    var errorDescription: String? {
+        String(localized: "Could not prepare document for preview.")
+    }
+}
+
+extension TranscriptMediaReference {
+    var fileExtension: String {
         switch source {
         case let .remoteURL(url):
-            let ext = url.pathExtension.trimmingCharacters(in: .whitespacesAndNewlines)
-            return ext.isEmpty ? "mp4" : ext
+            return url.pathExtension.lowercased()
         case let .localPath(path):
-            let ext = URL(fileURLWithPath: path).pathExtension.trimmingCharacters(in: .whitespacesAndNewlines)
-            return ext.isEmpty ? "mp4" : ext
+            return URL(fileURLWithPath: path).pathExtension.lowercased()
         }
     }
+
+    var isQuickLookPreviewable: Bool {
+        QuickLookExtensions.isPreviewable(fileExtension)
+    }
+
+    var isTextPreviewable: Bool {
+        Self.textExtensions.contains(fileExtension)
+    }
+
+    var isMarkdownFile: Bool {
+        Self.markdownExtensions.contains(fileExtension)
+    }
+
+    fileprivate var videoFileExtension: String {
+        let ext = fileExtension
+        return ext.isEmpty ? "mp4" : ext
+    }
+
+    private static let textExtensions: Set<String> = [
+        "css", "html", "js", "json", "log", "md", "markdown", "mdown", "mkd",
+        "py", "rb", "rs", "sh", "sql", "swift", "toml", "ts", "txt",
+        "xml", "yaml", "yml"
+    ]
+
+    private static let markdownExtensions: Set<String> = [
+        "md", "markdown", "mdown", "mkd"
+    ]
 }

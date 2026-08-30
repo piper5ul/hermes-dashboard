@@ -134,8 +134,9 @@ private struct TranscriptMediaThumbnailView: View {
 
         case .unsupported where loadMediaData != nil:
             if let loadMediaData {
-                TranscriptMediaFileExportView(
+                TranscriptMediaFilePreviewChip(
                     reference: reference,
+                    onPreviewMedia: onPreviewMedia,
                     loadMediaData: {
                         await loadMediaData(reference)
                     }
@@ -385,8 +386,9 @@ private struct TranscriptMediaAudioExportView: View {
     }
 }
 
-private struct TranscriptMediaFileExportView: View {
+private struct TranscriptMediaFilePreviewChip: View {
     let reference: TranscriptMediaReference
+    let onPreviewMedia: ((TranscriptMediaReference) -> Void)?
     let loadMediaData: () async -> Data?
 
     @State private var cachedData: Data?
@@ -399,34 +401,41 @@ private struct TranscriptMediaFileExportView: View {
 
     init(
         reference: TranscriptMediaReference,
+        onPreviewMedia: ((TranscriptMediaReference) -> Void)?,
         initialData: Data? = nil,
         loadMediaData: @escaping () async -> Data?
     ) {
         self.reference = reference
+        self.onPreviewMedia = onPreviewMedia
         self.loadMediaData = loadMediaData
         _cachedData = State(initialValue: initialData)
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(systemName: "doc")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(Color(.secondaryLabel))
+            Button {
+                onPreviewMedia?(reference)
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "doc")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Color(.secondaryLabel))
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(reference.displayName)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(Color(.label))
-                    .lineLimit(1)
-                    .truncationMode(.middle)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(reference.displayName)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(Color(.label))
+                            .lineLimit(1)
+                            .truncationMode(.middle)
 
-                Text(isExporting
-                     ? String(localized: "Loading…")
-                     : String(localized: "Tap to download"))
-                    .font(.caption2)
-                    .foregroundStyle(Color(.secondaryLabel))
-                    .lineLimit(1)
+                        Text(String(localized: "Tap to preview"))
+                            .font(.caption2)
+                            .foregroundStyle(Color(.secondaryLabel))
+                            .lineLimit(1)
+                    }
+                }
             }
+            .buttonStyle(.chatTactile(.thumbnail))
 
             Spacer(minLength: 8)
 
@@ -694,6 +703,11 @@ struct TranscriptMediaPreviewView: View {
                     audioContent(audioData)
                 } else if let videoURL = viewModel.videoFileURL {
                     videoContent(videoURL)
+                } else if let documentURL = viewModel.documentFileURL {
+                    QuickLookPreviewView(fileURL: documentURL)
+                        .ignoresSafeArea()
+                } else if let text = viewModel.textContent {
+                    textFileContent(text)
                 } else {
                     unavailableContent(String(localized: "Preview is not available for this media."))
                 }
@@ -831,6 +845,26 @@ struct TranscriptMediaPreviewView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color(.systemBackground))
+    }
+
+    private func textFileContent(_ text: String) -> some View {
+        ScrollView(item.reference.isMarkdownFile ? .vertical : [.vertical, .horizontal]) {
+            VStack(alignment: .leading, spacing: 12) {
+                mediaHeader
+
+                if item.reference.isMarkdownFile {
+                    MarkdownRenderer(content: text, isStreaming: false)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(text)
+                        .font(.system(.body, design: .monospaced))
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .padding()
+        }
         .background(Color(.systemBackground))
     }
 
