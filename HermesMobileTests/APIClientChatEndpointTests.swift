@@ -221,7 +221,8 @@ final class APIClientChatEndpointTests: APIClientTestCase {
         XCTAssertEqual(item.displayName, "report.pdf")
         XCTAssertEqual(item.displayPath, "/tmp/workspace/report.pdf")
         XCTAssertFalse(item.inferredIsImage)
-        XCTAssertTrue(item.isKnownUnsupportedBinary)
+        XCTAssertTrue(item.isQuickLookPreviewable)
+        XCTAssertFalse(item.isKnownUnsupportedBinary)
     }
 
     func testCancelChatBuildsExpectedQuery() async throws {

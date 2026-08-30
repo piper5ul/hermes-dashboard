@@ -58,6 +58,14 @@ final class FilePreviewViewModel {
                 } else {
                     preview = .unavailable(String(localized: "Could not decode this image."))
                 }
+            } else if isQuickLookPreviewablePath {
+                let data = try await apiClient.rawFileData(sessionID: sessionID, path: path)
+                exportData = data
+                if let fileURL = QuickLookExtensions.temporaryFileURL(filename: exportFilename, data: data) {
+                    preview = .document(fileURL)
+                } else {
+                    preview = .unavailable(String(localized: "Could not prepare document for preview."))
+                }
             } else if isKnownUnsupportedBinaryPath {
                 preview = .unavailable(String(localized: "Preview is not available for this file type."))
             } else {
@@ -113,12 +121,16 @@ final class FilePreviewViewModel {
         ["png", "jpg", "jpeg", "gif", "webp", "ico", "bmp"].contains(pathExtension)
     }
 
+    private var isQuickLookPreviewablePath: Bool {
+        QuickLookExtensions.isPreviewable(pathExtension)
+    }
+
     private var isKnownUnsupportedBinaryPath: Bool {
         [
-            "7z", "a", "aiff", "avi", "bin", "bz2", "class", "db", "dmg", "doc",
-            "docx", "dylib", "exe", "flac", "gz", "jar", "m4a", "mov", "mp3",
-            "mp4", "o", "pdf", "pkg", "ppt", "pptx", "pyc", "rar", "sqlite",
-            "svg", "tar", "tgz", "wav", "xls", "xlsx", "xz", "zip"
+            "7z", "a", "aiff", "avi", "bin", "bz2", "class", "db", "dmg",
+            "dylib", "exe", "flac", "gz", "jar", "m4a", "mov", "mp3",
+            "mp4", "o", "pkg", "pyc", "rar", "sqlite",
+            "svg", "tar", "tgz", "wav", "xz", "zip"
         ].contains(pathExtension)
     }
 
@@ -146,7 +158,35 @@ enum FilePreviewContent {
     case text(FileResponse)
     case image(ImageFilePreview)
     case audio(Data)
+    case document(URL)
     case unavailable(String)
+}
+
+enum QuickLookExtensions {
+    static let previewable: Set<String> = [
+        "csv", "doc", "docx", "pdf", "ppt", "pptx", "rtf", "xls", "xlsx"
+    ]
+
+    static func isPreviewable(_ pathExtension: String) -> Bool {
+        previewable.contains(pathExtension.lowercased())
+    }
+
+    static func temporaryFileURL(filename: String, data: Data) -> URL? {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("QuickLookPreview", isDirectory: true)
+        try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        let fileURL = tempDir.appendingPathComponent(filename)
+        do {
+            try data.write(to: fileURL)
+            return fileURL
+        } catch {
+            return nil
+        }
+    }
+
+    static func cleanUpTemporaryFiles() {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent("QuickLookPreview", isDirectory: true)
+        try? FileManager.default.removeItem(at: tempDir)
+    }
 }
 
 struct ImageFilePreview {

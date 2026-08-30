@@ -61,6 +61,10 @@ struct ChatAttachmentPreviewItem: Identifiable, Equatable {
         AttachmentAudioDetection.isAudio(isImage: isImage, mime: mime, name: name, path: path)
     }
 
+    var isQuickLookPreviewable: Bool {
+        QuickLookExtensions.isPreviewable(pathExtension)
+    }
+
     var isKnownUnsupportedBinary: Bool {
         Self.unsupportedBinaryExtensions.contains(pathExtension)
     }
@@ -74,10 +78,10 @@ struct ChatAttachmentPreviewItem: Identifiable, Equatable {
     ]
 
     private static let unsupportedBinaryExtensions: Set<String> = [
-        "7z", "a", "aiff", "avi", "bin", "bz2", "class", "db", "dmg", "doc",
-        "docx", "dylib", "exe", "flac", "gz", "jar", "m4a", "mov", "mp3",
-        "mp4", "o", "pdf", "pkg", "ppt", "pptx", "pyc", "rar", "sqlite",
-        "svg", "tar", "tgz", "wav", "xls", "xlsx", "xz", "zip"
+        "7z", "a", "aiff", "avi", "bin", "bz2", "class", "db", "dmg",
+        "dylib", "exe", "flac", "gz", "jar", "m4a", "mov", "mp3",
+        "mp4", "o", "pkg", "pyc", "rar", "sqlite",
+        "svg", "tar", "tgz", "wav", "xz", "zip"
     ]
 }
 
@@ -149,6 +153,9 @@ struct ChatAttachmentPreviewView: View {
             imageContent(file)
         case let .audio(data):
             audioContent(data)
+        case let .document(url):
+            QuickLookPreviewView(fileURL: url)
+                .ignoresSafeArea()
         case let .unavailable(message):
             unavailableContent(message)
         }
@@ -252,7 +259,7 @@ struct ChatAttachmentPreviewView: View {
                 parts.append(ByteCountFormatter.string(fromByteCount: Int64(file.originalByteCount), countStyle: .file))
             case let .audio(data):
                 parts.append(ByteCountFormatter.string(fromByteCount: Int64(data.count), countStyle: .file))
-            case .unavailable:
+            case .document, .unavailable:
                 break
             }
         } else if let size = item.size {
@@ -331,6 +338,14 @@ final class ChatAttachmentPreviewViewModel {
                 // encoded audio; checked before the unsupported-binary list,
                 // which would otherwise reject m4a/mp3/wav/flac.
                 preview = .audio(try await apiClient.rawFileData(sessionID: sessionID, path: path))
+            } else if item.isQuickLookPreviewable {
+                let data = try await apiClient.rawFileData(sessionID: sessionID, path: path)
+                let filename = item.displayName
+                if let fileURL = QuickLookExtensions.temporaryFileURL(filename: filename, data: data) {
+                    preview = .document(fileURL)
+                } else {
+                    preview = .unavailable(String(localized: "Could not prepare document for preview."))
+                }
             } else if item.isKnownUnsupportedBinary {
                 preview = .unavailable(String(localized: "Preview is not available for this file type."))
             } else {

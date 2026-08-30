@@ -136,9 +136,10 @@ struct FilePreviewView: View {
         case let .image(file):
             imageContent(file.data)
         case .audio:
-            // The workspace file browser never produces audio previews; this
-            // arm only keeps the shared `FilePreviewContent` switch exhaustive.
             unavailableContent(String(localized: "Preview is not available for this file type."))
+        case let .document(url):
+            QuickLookPreviewView(fileURL: url)
+                .ignoresSafeArea()
         case let .unavailable(message):
             unavailableContent(message)
         }
