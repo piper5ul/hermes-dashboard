@@ -126,7 +126,7 @@
 		A04500000000000000000004 /* AgentRunActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04500000000000000000010 /* AgentRunActivityAttributes.swift */; };
 		A04500000000000000000005 /* HermesDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04500000000000000000011 /* HermesDeepLink.swift */; };
 		A04500000000000000000006 /* AgentRunLiveActivityWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04500000000000000000013 /* AgentRunLiveActivityWidget.swift */; };
-		A04500000000000000000007 /* HermesLiveActivityWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A04500000000000000000017 /* HermesLiveActivityWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A04500000000000000000007 /* HermesLiveActivityWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A04500000000000000000017 /* HermesLiveActivityWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A04500000000000000000008 /* LiveActivityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04500000000000000000018 /* LiveActivityTests.swift */; };
 		A048C0DE0000000000000001 /* SessionRenameSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A048C0DE0000000000000002 /* SessionRenameSheet.swift */; };
 		A10900000000000000000001 /* SessionNavigationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10900000000000000000011 /* SessionNavigationState.swift */; };
@@ -139,7 +139,7 @@
 		B5A100000000000000000003 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000011 /* ShareViewController.swift */; };
 		B5A100000000000000000004 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000014 /* PrivacyInfo.xcprivacy */; };
 		B5A100000000000000000005 /* SharedDraftStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000016 /* SharedDraftStoreTests.swift */; };
-		B5A100000000000000000006 /* HermesShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000017 /* HermesShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B5A100000000000000000006 /* HermesShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000017 /* HermesShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B5A100000000000000000007 /* ShareInputReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000018 /* ShareInputReader.swift */; };
 		B5A100000000000000000008 /* ShareInputReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000018 /* ShareInputReader.swift */; };
 		B5A100000000000000000009 /* ShareInputReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A100000000000000000019 /* ShareInputReaderTests.swift */; };
@@ -387,16 +387,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		B5A100000000000000000023 /* Embed App Extensions */ = {
+		B5A100000000000000000023 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				B5A100000000000000000006 /* HermesShareExtension.appex in Embed App Extensions */,
-				A04500000000000000000007 /* HermesLiveActivityWidget.appex in Embed App Extensions */,
+				B5A100000000000000000006 /* HermesShareExtension.appex in Embed Foundation Extensions */,
+				A04500000000000000000007 /* HermesLiveActivityWidget.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1421,7 +1421,7 @@
 				1A2B3C4D5E6F700000000050 /* Sources */,
 				1A2B3C4D5E6F700000000060 /* Resources */,
 				1A2B3C4D5E6F700000000020 /* Frameworks */,
-				B5A100000000000000000023 /* Embed App Extensions */,
+				B5A100000000000000000023 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -1504,7 +1504,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2640;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 2700;
 				TargetAttributes = {
 					1A2B3C4D5E6F700000000040 = {
 						CreatedOnToolsVersion = 26.4.1;
@@ -1992,6 +1992,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_DISPLAY_NAME = Widgita;
 				APP_URL_SCHEME_SUFFIX = "";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -2047,6 +2049,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_STRICT_CONCURRENCY = targeted;
@@ -2060,6 +2063,8 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_DISPLAY_NAME = Widgita;
 				APP_URL_SCHEME_SUFFIX = "";
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -2108,6 +2113,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_STRICT_CONCURRENCY = targeted;
 				VALIDATE_PRODUCT = YES;
